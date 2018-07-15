@@ -11,7 +11,7 @@ namespace Pol_Items_lootgroups.Classes
 
     static class Simulator
     {
-        // inherithing CutUp class, since i already has Name and Amount attribut what we need.
+        // inherithing CutUp class, since it already has Name and Amount attribut what we need.
         // just chance amount from string to int...
         private class ItemStack : CutUp
         {
@@ -23,14 +23,19 @@ namespace Pol_Items_lootgroups.Classes
 
         static private bool _debug = false;
 
-        private static List<String> _droppedLoot = new List<string>();
         private static List<String> _warnings = new List<string>();
         private static List<ItemGroup> _itemGroups = null;
         private static List<Item> _items = null;
+
+        // contain template info
+        private static Loot _lootTemplate = null;
+
+        // this will be the eventual "monster bag"
+        private static List<ItemStack> _bag = new List<ItemStack>();
+        // this will contain items from cut action
+        private static List<ItemStack> _cutBag = new List<ItemStack>();
         
-        // generate loot stacks here...
-        private static List<ItemStack> _itemStacks = new List<ItemStack>();
-       
+              
 
         private static ItemGroup getItemGroupByName(string groupName)
         {
@@ -80,9 +85,9 @@ namespace Pol_Items_lootgroups.Classes
             return true;
         }
 
-        private static void addToStack(string objName, int amount)
+        private static void addToBag(string objName, int amount)
         {
-            foreach( var item in _itemStacks)
+            foreach( var item in _bag)
             {
                 if (item.ItemName == objName)
                 {
@@ -95,29 +100,42 @@ namespace Pol_Items_lootgroups.Classes
             ItemStack tempStack = new ItemStack();
             tempStack.ItemName = objName;
             tempStack.Amount = amount;
-            _itemStacks.Add(tempStack);
+            _bag.Add(tempStack);
 
         }
 
-        private static void transferStacksToLoot()
+
+        private static void addToCutBag(string objName, int amount)
         {
-            foreach(var stack in _itemStacks)
+            foreach (var item in _cutBag)
             {
-                _droppedLoot.Add(string.Format("{0}({1})", stack.ItemName, stack.Amount));
+                if (item.ItemName == objName)
+                {
+                    item.Amount += amount;
+                    return;
+                }
             }
 
-            _itemStacks.Clear();
-        }
+            // If we reach here the item was not found, just add it as new..
+            ItemStack tempStack = new ItemStack();
+            tempStack.ItemName = objName;
+            tempStack.Amount = amount;
+            _cutBag.Add(tempStack);
 
+        }
 
         public static void MakeLoot(Loot template, List<ItemGroup> itemGroups = null, List<Item> items = null)
         {
             ///////// Reset loot drop //////////
-            _droppedLoot.Clear();
+            _bag.Clear();
+            _cutBag.Clear();
             _warnings.Clear();
-            
+
+            // Save template name
+            _lootTemplate = template;
+
             ///////// Populate items //////////
-            if(items == null)
+            if (items == null)
             {
                 _warnings.Add("No items loaded, so no validation check.");
             }
@@ -146,8 +164,8 @@ namespace Pol_Items_lootgroups.Classes
                 int goldDung = Convert.ToInt32(GOLD_MULTIPLIER_DUNG * goldSum);
                 int goldOut = Convert.ToInt32(GOLD_MULTIPLIER_OUT * goldSum);
 
-                _droppedLoot.Add(string.Format("{0}{1}", "Gold Dungeon: ", goldDung));
-                _droppedLoot.Add(string.Format("{0}{1}", "Gold Outside: ", goldOut));
+                addToBag(string.Format("{0}", "Gold Dungeon: ", goldDung), goldDung);
+                addToBag(string.Format("{0}", "Gold Outside: "), goldOut);
             }
 
             ///////// Done with gold /////////
@@ -234,24 +252,17 @@ namespace Pol_Items_lootgroups.Classes
             }
 
             //////// End of specified loot /////////                 
-
-            // Add total stacks of specific items and random from group to loot
-            transferStacksToLoot();
-           
+  
 
             //////// On corpse cut /////////
 
             if (template.cutUps.Count() > 0)
             {
-                _droppedLoot.Add("");
-                _droppedLoot.Add("On_corpse_cut");
-                _droppedLoot.Add("{");
+            
                 foreach (var item in template.cutUps)
                 {
-                    MakeSpecifiedLoot("\t" + item.ItemName, item.Amount, 100, false);
+                    MakeSpecifiedLoot(item.ItemName, item.Amount, 100, false);
                 }
-                transferStacksToLoot();
-                _droppedLoot.Add("}");
             }
 
             //////// end of corpse cut /////////
@@ -309,7 +320,7 @@ namespace Pol_Items_lootgroups.Classes
 
                     if (eventualItemName != null)
                     {
-                        _droppedLoot.Add(eventualItemName);
+                        addToBag(eventualItemName, 1);
                     }
                     else
                     {
@@ -355,8 +366,17 @@ namespace Pol_Items_lootgroups.Classes
                 {
                     if (Dice.getRandom(1, 100) <= chance)
                     {
-                        //_droppedLoot.Add(string.Format("{0}({1})", objName, simAmount));
-                        addToStack(objName, 1);
+                        // atm i know that specified item in drop is limited to 20, while cut action does not
+                        // have item amount restriction
+                        if (limitedToTwenty)
+                        {
+                            addToBag(objName, 1);
+                        }
+                        else
+                        {
+                            addToCutBag(objName, 1);
+                        }
+                        
                     }
 
                 }
@@ -382,16 +402,16 @@ namespace Pol_Items_lootgroups.Classes
                 switch (tier)
                 {
                     case 1:
-                        _droppedLoot.Add(string.Format("{0} HandBook Of {1}", "Apprentice", skillPrefix));
+                        addToBag(string.Format("{0} HandBook Of {1}", "Apprentice", skillPrefix), 1);
                         break;
                     case 2:
-                        _droppedLoot.Add(string.Format("{0} HandBook Of {1}", "Expert", skillPrefix));
+                        addToBag(string.Format("{0} HandBook Of {1}", "Expert", skillPrefix), 1);
                         break;
                     case 3:
-                        _droppedLoot.Add(string.Format("{0} HandBook Of {1}", "Master", skillPrefix));
+                        addToBag(string.Format("{0} HandBook Of {1}", "Master", skillPrefix), 1);
                         break;
                     case 4:
-                        _droppedLoot.Add(string.Format("{0} HandBook Of {1}", "Legendary", skillPrefix));
+                        addToBag(string.Format("{0} HandBook Of {1}", "Legendary", skillPrefix), 1);
                         break;
                     default:
                         _warnings.Add(string.Format("There is a skill book with Tier({0}) where's only 1-4 are allowed!",tier));
@@ -455,7 +475,7 @@ namespace Pol_Items_lootgroups.Classes
                     }
                     else
                     {
-                        addToStack(group.Items[itemOutOfGroup], 1);
+                        addToBag(group.Items[itemOutOfGroup], 1);
                     }
                 }
             }
@@ -501,31 +521,62 @@ namespace Pol_Items_lootgroups.Classes
                 switch (Dice.getRandom(1, 3))
                 {
                     case 1:
-                        _droppedLoot.Add(string.Format("{0} Tier({1}) Trap({2})", "a locked chest", baseQuality, "explosion"));
+                        addToBag(string.Format("{0} Tier({1}) Trap({2})", "a locked chest", baseQuality, "explosion"), 1);
                         break;
                     case 2:
-                        _droppedLoot.Add(string.Format("{0} Tier({1}) Trap({2})", "a locked chest", baseQuality, "poison"));
+                        addToBag(string.Format("{0} Tier({1}) Trap({2})", "a locked chest", baseQuality, "poison"), 1);
                         break;
                     case 3:
-                        _droppedLoot.Add(string.Format("{0} Tier({1}) Trap({2})", "a locked chest", baseQuality, "djinni"));
+                        addToBag(string.Format("{0} Tier({1}) Trap({2})", "a locked chest", baseQuality, "djinni"), 1);
                         break;
                 }
             }
             else
             {
-                _droppedLoot.Add(string.Format("{0} Tier({1}) Trap({2})", "a locked chest", baseQuality, "no trap"));
+                addToBag(string.Format("{0} Tier({1}) Trap({2})", "a locked chest", baseQuality, "no trap"), 1);
             }
         }
 
 
         public static List<string> getLootInfo()
         {
-            return _droppedLoot;
+            List<string> loot = new List<string>();
+            loot.Add(string.Format("// generated by Loot-Items-lootgroups\r\n"));
+            loot.Add(string.Format("{0}", _lootTemplate.Name));
+            loot.Add("{");
+            if (_bag.Count > 0)
+            {
+                foreach (var item in _bag)
+                {
+                    loot.Add(string.Format("\t {0} [{1}]", item.ItemName, item.Amount));
+                }
+            }
+
+            if (_cutBag.Count > 0)
+            {
+                loot.Add(""); // add empty line in listbox
+                loot.Add("\tOn_cut_corpse");
+                loot.Add("\t{");
+                foreach (var item in _cutBag)
+                {
+                    loot.Add(string.Format("\t\t {0} [{1}]", item.ItemName, item.Amount));
+                }
+                loot.Add("\t}");
+            }
+
+            if (_warnings.Count > 0)
+            {
+                loot.Add(""); // add empty line in listbox
+                loot.Add("\twarnings\r\n\t{\r\n");
+                foreach (var warning in _warnings)
+                {
+                    loot.Add(string.Format("\t\t {0}", warning));
+                }
+                loot.Add("\t}\r\n");
+            }
+            loot.Add("}");
+            return loot;
         }
 
-        public static List<string> getWarnings()
-        {
-            return _warnings;
-        }
     }
 }
