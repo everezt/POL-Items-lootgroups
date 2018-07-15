@@ -11,7 +11,7 @@ namespace Pol_Items_lootgroups.Classes
     {
         static Random rnd = new Random(DateTime.Now.Millisecond);
 
-        public static bool isValidDieString(string str)
+        public static bool isValidDiceString(string str)
         {
             int x;
             if (int.TryParse(str, out x))
@@ -176,7 +176,7 @@ namespace Pol_Items_lootgroups.Classes
             }
         }
 
-        public static string generateDieString(int min, int max)
+        public static string generateDiceString(int min, int max)
         {
 
             int extra = 0;
@@ -237,10 +237,10 @@ namespace Pol_Items_lootgroups.Classes
             return rnd.Next(min, max + 1);
         }
 
-        public static int Roll(string dieString)
+        public static int Roll(string diceString)
         {
             
-            int[] result = Dice.parseDiceString(dieString);
+            int[] result = Dice.parseDiceString(diceString);
             int dices = result[0];
             int min = result[1];
             int max = result[2];

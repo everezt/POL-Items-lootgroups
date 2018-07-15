@@ -57,13 +57,13 @@ namespace Pol_Items_lootgroups.Classes
                 numericUpDown2.Value = 0;
                 numericUpDown3.Value = 0;
 
-                dieStringLabel.Text = "Gold is set to NULL";
+                diceStringLabel.Text = "Gold is set to NULL";
                 allowGeneration = true;
             }
             else
             {
 
-                if (Dice.isValidDieString(passedTextBox.Text))
+                if (Dice.isValidDiceString(passedTextBox.Text))
                 {
                     try
                     {
@@ -79,8 +79,8 @@ namespace Pol_Items_lootgroups.Classes
 
                         if (result[0] > 16)
                         {
-                            MessageBox.Show("This die string will take too many iterations, generating new one!");
-                            string res = Dice.generateDieString(result[1], result[2]);
+                            MessageBox.Show("This dice string will take too many iterations, generating new one!");
+                            string res = Dice.generateDiceString(result[1], result[2]);
                             passedTextBox.Text = res;
                             result = Dice.parseDiceString(res);
                         }
@@ -89,12 +89,12 @@ namespace Pol_Items_lootgroups.Classes
                         numericUpDown2.Value = result[1];
                         numericUpDown3.Value = result[2];
 
-                        dieStringLabel.Text = "Die string: " + passedTextBox.Text;
+                        diceStringLabel.Text = "Die string: " + passedTextBox.Text;
                         allowGeneration = true;
                     }
                     catch
                     {
-                        MessageBox.Show("Something went wrong while calculating min-max! Generating new die string!");
+                        MessageBox.Show("Something went wrong while calculating min-max! Generating new dice string!");
                         allowGeneration = true;
                         doGeneration();
                     }
@@ -102,7 +102,7 @@ namespace Pol_Items_lootgroups.Classes
                 }
                 else
                 {
-                    MessageBox.Show("It's not a valid die string, generating new one!");
+                    MessageBox.Show("It's not a valid dice string, generating new one!");
                     allowGeneration = true;
                     doGeneration();
                 }
@@ -114,11 +114,11 @@ namespace Pol_Items_lootgroups.Classes
         {
             if (allowGeneration)
             {
-                string result = Dice.generateDieString(int.Parse(numericUpDown2.Value.ToString()), int.Parse(numericUpDown3.Value.ToString()));
+                string result = Dice.generateDiceString(int.Parse(numericUpDown2.Value.ToString()), int.Parse(numericUpDown3.Value.ToString()));
 
 
 
-                if (Dice.isValidDieString(result))
+                if (Dice.isValidDiceString(result))
                 {
                     int[] intRes = Dice.parseDiceString(result);
 
@@ -128,7 +128,7 @@ namespace Pol_Items_lootgroups.Classes
 
                     passedTextBox.Text = result;
 
-                    dieStringLabel.Text = "Die string: " + result;
+                    diceStringLabel.Text = "Dice string: " + result;
                 }
                 else
                 {
@@ -136,7 +136,7 @@ namespace Pol_Items_lootgroups.Classes
                     {
                         passedTextBox.Text = "";
                     }
-                    dieStringLabel.Text = result;
+                    diceStringLabel.Text = result;
                 }
             }
         }

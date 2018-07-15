@@ -138,7 +138,7 @@ namespace Pol_Items_lootgroups.Classes
 
             ///////// Let's generate gold ////////////
 
-            if (!string.IsNullOrWhiteSpace(template.Gold) && Dice.isValidDieString(template.Gold))
+            if (!string.IsNullOrWhiteSpace(template.Gold) && Dice.isValidDiceString(template.Gold))
             {
                 int goldSum = Dice.Roll(template.Gold);
 
@@ -337,7 +337,7 @@ namespace Pol_Items_lootgroups.Classes
                 return;
             }
 
-            if (Dice.isValidDieString(amount))
+            if (Dice.isValidDiceString(amount))
             {
                 int literalAmount = Dice.Roll(amount);
 
@@ -402,7 +402,7 @@ namespace Pol_Items_lootgroups.Classes
 
         private static void MakeItemOutOfGroup(string itemGroup, string dice, int chance, bool lockedChest)
         {
-            if (!Dice.isValidDieString(dice))
+            if (!Dice.isValidDiceString(dice))
             {
                 _warnings.Add("Dice string on " + itemGroup + " is invalid");
                 return;

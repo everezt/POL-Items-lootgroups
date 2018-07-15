@@ -35,7 +35,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
             this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
-            this.dieStringLabel = new System.Windows.Forms.Label();
+            this.diceStringLabel = new System.Windows.Forms.Label();
             this.generateBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
@@ -117,14 +117,14 @@
             this.numericUpDown3.Size = new System.Drawing.Size(79, 20);
             this.numericUpDown3.TabIndex = 6;
             // 
-            // dieStringLabel
+            // diceStringLabel
             // 
-            this.dieStringLabel.AutoSize = true;
-            this.dieStringLabel.Location = new System.Drawing.Point(4, 113);
-            this.dieStringLabel.Name = "dieStringLabel";
-            this.dieStringLabel.Size = new System.Drawing.Size(65, 13);
-            this.dieStringLabel.TabIndex = 7;
-            this.dieStringLabel.Text = "Die String: 1";
+            this.diceStringLabel.AutoSize = true;
+            this.diceStringLabel.Location = new System.Drawing.Point(4, 113);
+            this.diceStringLabel.Name = "diceStringLabel";
+            this.diceStringLabel.Size = new System.Drawing.Size(71, 13);
+            this.diceStringLabel.TabIndex = 7;
+            this.diceStringLabel.Text = "Dice String: 1";
             // 
             // generateBtn
             // 
@@ -142,7 +142,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(187, 142);
             this.Controls.Add(this.generateBtn);
-            this.Controls.Add(this.dieStringLabel);
+            this.Controls.Add(this.diceStringLabel);
             this.Controls.Add(this.numericUpDown3);
             this.Controls.Add(this.numericUpDown2);
             this.Controls.Add(this.label4);
@@ -173,7 +173,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.NumericUpDown numericUpDown2;
         private System.Windows.Forms.NumericUpDown numericUpDown3;
-        private System.Windows.Forms.Label dieStringLabel;
+        private System.Windows.Forms.Label diceStringLabel;
         private System.Windows.Forms.Button generateBtn;
     }
 }
