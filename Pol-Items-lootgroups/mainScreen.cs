@@ -40,16 +40,17 @@ namespace Pol_Items_lootgroups
             OpenFileDialog openFileForm = new OpenFileDialog();
             openFileForm.Filter = "Object types file |*.txt";
 
-            fullItems.Clear();
-            filteredItems.Clear();
-            itemList.Items.Clear();
-            isFiltered = false;
+            
 
             if (openFileForm.ShowDialog() == DialogResult.OK)
             {
                 try
                 {
-                 
+                    fullItems.Clear();
+                    filteredItems.Clear();
+                    itemList.Items.Clear();
+                    isFiltered = false;
+
                     string[] lines = System.IO.File.ReadAllLines(openFileForm.FileName);
                     int lineCount = lines.Count() - 1;
                     int currDone = 0;
@@ -198,17 +199,18 @@ namespace Pol_Items_lootgroups
 
         private void loadItemgroupsToolStripMenuItem_Click(object sender, EventArgs e)
         {
+
             OpenFileDialog openFileForm = new OpenFileDialog();
             openFileForm.Filter = "Itemgroups file |*.cfg";
-
-            itemGroups.Clear();
-            lootGroupList.Items.Clear();
-            lootGroupItems.Items.Clear();
 
             if (openFileForm.ShowDialog() == DialogResult.OK)
             {
                 try
-                {
+                {  
+
+                    itemGroups.Clear();
+                    lootGroupList.Items.Clear();
+                    lootGroupItems.Items.Clear();
 
                     string text = System.IO.File.ReadAllText(openFileForm.FileName);
 
