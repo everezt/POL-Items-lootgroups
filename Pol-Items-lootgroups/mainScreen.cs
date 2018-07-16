@@ -2121,12 +2121,15 @@ namespace Pol_Items_lootgroups
         private void button1_Click(object sender, EventArgs e)
         {
             string output = "";
-            foreach (var str in simList.Items)
+            if (simList.Items.Count > 0)
             {
-                output += str + "\r\n";
-            }           
+                foreach (var str in simList.Items)
+                {
+                    output += str + "\r\n";
+                }
 
-            Clipboard.SetText(output);
+                Clipboard.SetText(output);
+            }         
         }
 
         private void button2_Click(object sender, EventArgs e)
