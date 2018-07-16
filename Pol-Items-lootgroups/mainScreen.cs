@@ -2272,5 +2272,24 @@ namespace Pol_Items_lootgroups
 
             MessageBox.Show(string.Format("Min: {0} Max: {1}", min, max));
         }
+
+        private void exportTemplate_Click(object sender, EventArgs e)
+        {
+            string fileData = Parser.exportLootTemplates(lootTemplates);
+
+            System.IO.Stream myStream;
+            SaveFileDialog saveFileDiag = new SaveFileDialog();
+            saveFileDiag.Filter = "npc_lootgroups.cfg file|*.cfg";
+
+            if (saveFileDiag.ShowDialog() == DialogResult.OK)
+            {
+                if ((myStream = saveFileDiag.OpenFile()) != null)
+                {
+                    byte[] data = Encoding.UTF8.GetBytes(fileData);
+                    myStream.Write(data, 0, data.Length);
+                    myStream.Close();
+                }
+            }
+        }
     }
 }

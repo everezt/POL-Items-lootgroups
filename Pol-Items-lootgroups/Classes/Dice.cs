@@ -14,6 +14,12 @@ namespace Pol_Items_lootgroups.Classes
         public static bool isValidDiceString(string str)
         {
             int x;
+
+            if (str == null)
+            {
+                return false;
+            }
+
             if (int.TryParse(str, out x))
             {
                 return true;

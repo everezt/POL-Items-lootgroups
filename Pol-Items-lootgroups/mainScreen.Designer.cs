@@ -56,6 +56,7 @@
             this.addItem = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox12 = new System.Windows.Forms.GroupBox();
+            this.button3 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.simList = new System.Windows.Forms.ListBox();
             this.simulButton = new System.Windows.Forms.Button();
@@ -139,7 +140,6 @@
             this.goldBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.templateList = new System.Windows.Forms.ListBox();
-            this.button3 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -448,6 +448,16 @@
             this.groupBox12.TabIndex = 36;
             this.groupBox12.TabStop = false;
             this.groupBox12.Text = "Simulator";
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(251, 19);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 41;
+            this.button3.Text = "dbg";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click_1);
             // 
             // button1
             // 
@@ -1169,6 +1179,7 @@
             this.exportTemplate.TabIndex = 30;
             this.exportTemplate.Text = "Export";
             this.exportTemplate.UseVisualStyleBackColor = true;
+            this.exportTemplate.Click += new System.EventHandler(this.exportTemplate_Click);
             // 
             // templateInfoGroup
             // 
@@ -1323,16 +1334,6 @@
             this.templateList.Size = new System.Drawing.Size(172, 108);
             this.templateList.TabIndex = 11;
             this.templateList.SelectedIndexChanged += new System.EventHandler(this.listBox4_SelectedIndexChanged);
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(251, 19);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 41;
-            this.button3.Text = "dbg";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click_1);
             // 
             // mainScreen
             // 
