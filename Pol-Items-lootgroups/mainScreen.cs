@@ -361,8 +361,13 @@ namespace Pol_Items_lootgroups
             {
                 if (MessageBox.Show("Are you sure about deleting " + lootGroupList.Items[lootGroupList.SelectedIndex].ToString() + "?", "Alert", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
+                    int itemIndex = lootGroupList.SelectedIndex;
+
                     itemGroups.RemoveAt(lootGroupList.SelectedIndex);
                     lootGroupList.Items.RemoveAt(lootGroupList.SelectedIndex);
+
+                    selectNewItemAfterDelete(itemIndex, ref lootGroupList);
+
                 }
                    
             }
@@ -401,10 +406,17 @@ namespace Pol_Items_lootgroups
 
         private void delItem_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Are you sure about deleting " + lootGroupItems.Items[lootGroupItems.SelectedIndex].ToString() + "?", "Alert", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (lootGroupItems.SelectedIndex >= 0)
             {
-                itemGroups[lootGroupList.SelectedIndex].Items.RemoveAt(lootGroupItems.SelectedIndex);
-                lootGroupItems.Items.RemoveAt(lootGroupItems.SelectedIndex);
+                if (MessageBox.Show("Are you sure about deleting " + lootGroupItems.Items[lootGroupItems.SelectedIndex].ToString() + "?", "Alert", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    int itemIndex = lootGroupItems.SelectedIndex;
+
+                    itemGroups[lootGroupList.SelectedIndex].Items.RemoveAt(lootGroupItems.SelectedIndex);
+                    lootGroupItems.Items.RemoveAt(lootGroupItems.SelectedIndex);
+
+                    selectNewItemAfterDelete(itemIndex, ref lootGroupItems);
+                }
             }
         }
 
@@ -1177,15 +1189,8 @@ namespace Pol_Items_lootgroups
                     int itemIndex = lootItemsList.SelectedIndex;
                     lootTemplates[templateList.SelectedIndex].items.RemoveAt(itemIndex);
                     lootItemsList.Items.RemoveAt(itemIndex);
-                    
-                    if (lootItemsList.Items.Count > 1)
-                    {
-                        lootItemsList.SelectedIndex = itemIndex - 1;
-                    }
-                    else if (lootItemsList.Items.Count == 1)
-                    {
-                        lootItemsList.SelectedIndex = 0;
-                    }
+
+                    selectNewItemAfterDelete(itemIndex, ref lootItemsList);
 
                     dealWithTemplateItemButtons();
                 }
@@ -1492,14 +1497,7 @@ namespace Pol_Items_lootgroups
                     lootTemplates[templateIndex].randItemFromGroup.RemoveAt(itemIndex);
                     lootRandFromGroupList.Items.RemoveAt(itemIndex);
 
-                    if (lootRandFromGroupList.Items.Count > 1)
-                    {
-                        lootRandFromGroupList.SelectedIndex = itemIndex - 1;
-                    }
-                    else if (lootRandFromGroupList.Items.Count == 1)
-                    {
-                        lootRandFromGroupList.SelectedIndex = 0;
-                    }
+                    selectNewItemAfterDelete(itemIndex, ref lootRandFromGroupList);
 
                     dealWithRandItemButtons();
                 }
@@ -1558,14 +1556,7 @@ namespace Pol_Items_lootgroups
                     lootTemplates[templateIndex].cutUps.RemoveAt(itemIndex);
                     lootOnCorpseCutList.Items.RemoveAt(itemIndex);
 
-                    if (lootOnCorpseCutList.Items.Count > 1)
-                    {
-                        lootOnCorpseCutList.SelectedIndex = itemIndex - 1;
-                    }
-                    else if (lootOnCorpseCutList.Items.Count == 1)
-                    {
-                        lootOnCorpseCutList.SelectedIndex = 0;
-                    }
+                    selectNewItemAfterDelete(itemIndex, ref lootOnCorpseCutList);
 
                     dealWithCutUpButtons();
                 }
@@ -1625,14 +1616,7 @@ namespace Pol_Items_lootgroups
                     lootTemplates[templateIndex].randMagicItemFromGroup.RemoveAt(itemIndex);
                     lootRandMagicFromGroupList.Items.RemoveAt(itemIndex);
 
-                    if (lootRandMagicFromGroupList.Items.Count > 1)
-                    {
-                        lootRandMagicFromGroupList.SelectedIndex = itemIndex - 1;
-                    }
-                    else if (lootRandMagicFromGroupList.Items.Count == 1)
-                    {
-                        lootRandMagicFromGroupList.SelectedIndex = 0;
-                    }
+                    selectNewItemAfterDelete(itemIndex, ref lootRandMagicFromGroupList);
 
                     dealWithRandMagicItemButtons();
                 }
@@ -1732,14 +1716,7 @@ namespace Pol_Items_lootgroups
                     lootTemplates[templateIndex].magicItems.RemoveAt(itemIndex);
                     lootMagicItemList.Items.RemoveAt(itemIndex);
 
-                    if (lootMagicItemList.Items.Count > 1)
-                    {
-                        lootMagicItemList.SelectedIndex = itemIndex - 1;
-                    }
-                    else if (lootMagicItemList.Items.Count == 1)
-                    {
-                        lootMagicItemList.SelectedIndex = 0;
-                    }
+                    selectNewItemAfterDelete(itemIndex, ref lootMagicItemList);
 
                     dealWithMagicItemButtons();
                 }
@@ -1781,14 +1758,7 @@ namespace Pol_Items_lootgroups
                     lootTemplates[templateIndex].skillBooks.RemoveAt(itemIndex);
                     lootSkillBookList.Items.RemoveAt(itemIndex);
 
-                    if (lootSkillBookList.Items.Count > 1)
-                    {
-                        lootSkillBookList.SelectedIndex = itemIndex - 1;
-                    }
-                    else if (lootSkillBookList.Items.Count == 1)
-                    {
-                        lootSkillBookList.SelectedIndex = 0;
-                    }
+                    selectNewItemAfterDelete(itemIndex, ref lootSkillBookList);
 
                     dealWithSkillBookButtons();
                 }
@@ -2097,17 +2067,15 @@ namespace Pol_Items_lootgroups
                 if (lootTableLoaded && itemsLoaded && groupsLoaded)
                 {
                     Simulator.MakeLoot(lootTemplates[templateList.SelectedIndex], itemGroups, fullItems);
+
+                    simList.Items.Clear();
+
+                    foreach (var item in Simulator.getLootInfo())
+                    {
+                        simList.Items.Add(item);
+                    }
                 }              
-
-                               
-
-                simList.Items.Clear();
-
-                foreach(var item in Simulator.getLootInfo())
-                {
-                    simList.Items.Add(item);
-                }
-              
+          
             }
 
             
@@ -2294,6 +2262,27 @@ namespace Pol_Items_lootgroups
                     myStream.Write(data, 0, data.Length);
                     myStream.Close();
                 }
+            }
+        }
+
+
+        private void selectNewItemAfterDelete(int selectedIndex, ref ListBox listbox)
+        {
+            if (listbox.Items.Count > 1)
+            {
+
+                int newIndex = selectedIndex - 1;
+
+                if (selectedIndex <= 0)
+                {
+                    newIndex = selectedIndex;
+                }
+
+                listbox.SelectedIndex = newIndex;
+            }
+            else if (listbox.Items.Count == 1)
+            {
+                listbox.SelectedIndex = 0;
             }
         }
     }
