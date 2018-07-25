@@ -327,12 +327,15 @@ namespace Pol_Items_lootgroups
 
             if (lootGroupList.SelectedIndex < 0)
             {
-                lootGroupList.SelectedIndex = 0;
+                lootGroupList.SelectedIndex = -1;
             }
 
-            foreach(var item in itemGroups[lootGroupList.SelectedIndex].Items)
+            if (lootGroupList.SelectedIndex >= 0)
             {
-                lootGroupItems.Items.Add(item);
+                foreach (var item in itemGroups[lootGroupList.SelectedIndex].Items)
+                {
+                    lootGroupItems.Items.Add(item);
+                }
             }
         }
 
@@ -2283,6 +2286,7 @@ namespace Pol_Items_lootgroups
             }
             else if (listbox.Items.Count == 1)
             {
+                MessageBox.Show("got here");
                 listbox.SelectedIndex = 0;
             }
         }
