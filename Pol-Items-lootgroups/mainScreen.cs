@@ -2159,6 +2159,7 @@ namespace Pol_Items_lootgroups
                     }
                     else
                     {
+                        output += string.Format("\t{0} => {1}\r\n", itemGroups[index].Items[i], "Deleted");
                         toBeDeleted.Add(itemGroups[index].Items[i]);
                         MessageBox.Show("Did not find item '" + itemGroups[index].Items[i] + "', ignoring it!");
                     }                   
